@@ -9,7 +9,7 @@ set :deploy_via, :remote_cache
 set :use_sudo, false
 
 set :scm, "git"
-set :repository,  "git:github.com:zhiyao/#{application}.git"
+set :repository,  "git@github.com:zhiyao/#{application}.git"
 set :branch, "master"
 
 default_run_options[:pty] = true
@@ -40,7 +40,8 @@ namespace :deploy do
   desc "#{command} unicorn server"
   task command, roles: :app, except: {no_release: true} do
     run "/etc/init.d/unicorn_#{application} #{command}"
-  end
+    end
+  end 
 
   task :setup_config, roles: :app do
     sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
@@ -65,4 +66,5 @@ namespace :deploy do
     end
   end
   before "deploy", "deploy:check_revision"
+
 end
